@@ -1,35 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Website Của Tiến</title>
-  <style>
-    h1 
-    {
-      color: green;
-    }
-    .to 
-    {
-      font-size: 50px;
-    }
-    .vua 
-    {
-      font-size: 20px;
-    }
-    .nho 
-    {
-      font-size: 12px;
-    }
-    body 
-    {
-      height: 100vh;
-      margin: 0;
-      background: linear-gradient(to bottom, #00f, #800080);
-      padding-top: 100px;
-    }
-  </style>
+  <title>Nhập 2 số</title>
 </head>
 <body>
-  <div class="h1 to">Tiêu đề website</div>
-  <div class="h1 vua">Nội dung</div>
+  <h2>Nhập 2 số bất kỳ</h2>
+  <input type="number" id="a" placeholder="Số A">
+  <input type="number" id="b" placeholder="Số B">
+  <button onclick="tinhTong()">Tính tổng</button>
+  <p id="ketqua"></p>
+
+  <script>
+    async function tinhTong() {
+      let a = document.getElementById("a").value;
+      let b = document.getElementById("b").value;
+      let res = await fetch(`http://localhost:18080/tong?a=${a}&b=${b}`);
+      let text = await res.text();
+      document.getElementById("ketqua").innerText = "Kết quả: " + text;
+    }
+  </script>
 </body>
 </html>
