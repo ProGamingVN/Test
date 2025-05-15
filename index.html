@@ -2,37 +2,54 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Website Của Tiến</title>
+  <title>Danh sách sách</title>
   <style>
-    .h1 
-    {
-      color: green;
+    .hidden {
+      display: none;
     }
-    .to 
-    {
-      font-size: 50px;
-    }
-    .vua 
-    {
-      font-size: 20px;
-    }
-    .nho 
-    {
-      font-size: 12px;
-    }
-    body 
-    {
-      overflow-x: auto;
-      height: 100vh;
-      margin: 0;
-      background: linear-gradient(to bottom, #00f, #800080);
-      text-align: center;
-      padding-top: 100px;
+    .book {
+      margin: 10px;
+      padding: 10px;
+      background-color: #eee;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="h1 to">Tiêu đề website</div>
-  <div class="h1 vua">Nội dung</div>
+
+  <!-- Trang chủ: Danh sách sách -->
+  <div id="home">
+    <h1>Danh sách sách giáo khoa</h1>
+    <div class="book" onclick="showDetail('toan')">Sách Toán</div>
+    <div class="book" onclick="showDetail('van')">Sách Văn</div>
+  </div>
+
+  <!-- Trang chi tiết -->
+  <div id="detail" class="hidden">
+    <h2 id="bookTitle">Tên sách</h2>
+    <p id="bookInfo">Thông tin sách sẽ hiện ở đây...</p>
+    <button onclick="goHome()">Quay lại</button>
+  </div>
+
+  <script>
+    function showDetail(book) {
+      document.getElementById("home").classList.add("hidden");
+      document.getElementById("detail").classList.remove("hidden");
+
+      if (book === 'toan') {
+        document.getElementById("bookTitle").innerText = "Sách Toán lớp 9";
+        document.getElementById("bookInfo").innerText = "Nội dung gồm đại số và hình học...";
+      } else if (book === 'van') {
+        document.getElementById("bookTitle").innerText = "Sách Ngữ Văn lớp 9";
+        document.getElementById("bookInfo").innerText = "Gồm thơ, truyện ngắn, và nghị luận...";
+      }
+    }
+
+    function goHome() {
+      document.getElementById("home").classList.remove("hidden");
+      document.getElementById("detail").classList.add("hidden");
+    }
+  </script>
+
 </body>
 </html>
