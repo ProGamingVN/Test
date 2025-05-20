@@ -30,6 +30,7 @@
   <div id="detail" class="hidden">
     <h2 id="bookTitle"></h2>
     <p id="bookInfo"></p>
+    <p2 id="morse"</p2>
     <button onclick="goHome()">Quay lại</button>
   </div>
 
@@ -43,6 +44,8 @@
       {
         document.getElementById("bookTitle").innerText = "Sách Toán lớp 9";
         document.getElementById("bookInfo").innerText = "Nội dung gồm đại số và hình học...";
+        const text="Xin chao ban nha"
+        document.getElementById("morse").innerText=textToMorse(text);
       }
       if (book === 'van') 
       {
