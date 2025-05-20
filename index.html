@@ -65,46 +65,32 @@
       return text.toUpperCase().split('').map(char => morseMap[char] || '').join(' ');
     }
 
-    async function showDetail(book) {
-      document.getElementById("home").classList.add("hidden");
-      document.getElementById("detail").classList.remove("hidden");
+    function showDetail(book) {
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("detail").classList.remove("hidden");
 
-      if (book === 'toan') {
-        document.getElementById("bookTitle").innerText = "Sách Toán lớp 9";
-        try 
-        {
-          const response = await fetch('data/toan.txt');
-          const text = await response.text();
-          document.getElementById("bookInfo").innerText = text;
-          const cleanText = normalizeVietnamese(text);
-          document.getElementById("morse").innerText = textToMorse(cleanText);
-        } 
-        catch (error) 
-        {
-          document.getElementById("bookInfo").innerText = "Không tải được nội dung sách Toán.";
-          document.getElementById("morse").innerText = "";
-          console.error('Lỗi khi fetch:', error);
-        }
-      }
+  // Tùy theo sách nào thì đặt tiêu đề tương ứng
+  let title = '';
+  if (book === 'toan') title = 'Sách Toán lớp 9';
+  else if (book === 'van') title = 'Sách Ngữ Văn lớp 9';
+  else title = 'Sách';
 
-      if (book === 'van') {
-        document.getElementById("bookTitle").innerText = "Sách Ngữ Văn lớp 9";
-        try 
-        {
-          const response = await fetch('data/van.txt');
-          const text = await response.text();
-          document.getElementById("bookInfo").innerText = text;
-          const cleanText = normalizeVietnamese(text);
-          document.getElementById("morse").innerText = textToMorse(cleanText);
-        } 
-        catch (error) 
-        {
-          document.getElementById("bookInfo").innerText = "Không tải được nội dung sách Toán.";
-          document.getElementById("morse").innerText = "";
-          console.error('Lỗi khi fetch:', error);
-        }
-      }
-    }
+  document.getElementById("bookTitle").innerText = title;
+
+  // Tải nội dung từ file tương ứng
+  fetch(`data/${book}.txt`)
+    .then(res => res.text())
+    .then(text => {
+      document.getElementById("bookInfo").innerText = text;
+      const noTone = normalizeVietnamese(text);
+      document.getElementById("morse").innerText = textToMorse(noTone);
+    })
+    .catch(err => {
+      document.getElementById("bookInfo").innerText = 'Không thể tải nội dung.';
+      document.getElementById("morse").innerText = '';
+      console.error('Lỗi:', err);
+    });
+  }
 
     function goHome() 
     {
