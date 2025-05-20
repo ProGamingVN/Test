@@ -35,6 +35,21 @@
   </div>
 
   <script>
+    const morseMap = 
+    {
+    A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.',
+    G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..',
+    M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.',
+    S: '...', T: '-', U: '..-', V: '...-', W: '.--', X: '-..-',
+    Y: '-.--', Z: '--..',
+    0: '-----', 1: '.----', 2: '..---', 3: '...--',
+    4: '....-', 5: '.....', 6: '-....', 7: '--...', 8: '---..', 9: '----.',
+    ' ': '/'
+    };
+    function textToMorse(text) 
+    {
+       return text.toUpperCase().split('').map(char => morseMap[char] || '').join(' ');
+    }
     function showDetail(book) 
     {
       document.getElementById("home").classList.add("hidden");
@@ -59,21 +74,7 @@
       document.getElementById("home").classList.remove("hidden");
       document.getElementById("detail").classList.add("hidden");
     }
-    const morseMap = 
-    {
-    A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.',
-    G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..',
-    M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.',
-    S: '...', T: '-', U: '..-', V: '...-', W: '.--', X: '-..-',
-    Y: '-.--', Z: '--..',
-    0: '-----', 1: '.----', 2: '..---', 3: '...--',
-    4: '....-', 5: '.....', 6: '-....', 7: '--...', 8: '---..', 9: '----.',
-    ' ': '/'
-    };
-    function textToMorse(text) 
-    {
-       return text.toUpperCase().split('').map(char => morseMap[char] || '').join(' ');
-    }
+    
   </script>
 
 </body>
