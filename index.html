@@ -8,7 +8,8 @@
     {
       display: none;
     }
-    .book {
+    .book 
+    {
       margin: 20px;
       padding: 10px;
       background-color: #eee;
@@ -27,26 +28,31 @@
 
   <!-- Trang chi tiết -->
   <div id="detail" class="hidden">
-    <h2 id="bookTitle">Tên sách</h2>
-    <p id="bookInfo">Thông tin sách sẽ hiện ở đây...</p>
+    <h2 id="bookTitle"></h2>
+    <p id="bookInfo"></p>
     <button onclick="goHome()">Quay lại</button>
   </div>
 
   <script>
-    function showDetail(book) {
+    function showDetail(book) 
+    {
       document.getElementById("home").classList.add("hidden");
       document.getElementById("detail").classList.remove("hidden");
 
-      if (book === 'toan') {
+      if (book === 'toan') 
+      {
         document.getElementById("bookTitle").innerText = "Sách Toán lớp 9";
         document.getElementById("bookInfo").innerText = "Nội dung gồm đại số và hình học...";
-      } else if (book === 'van') {
+      }
+      if (book === 'van') 
+      {
         document.getElementById("bookTitle").innerText = "Sách Ngữ Văn lớp 9";
         document.getElementById("bookInfo").innerText = "Gồm thơ, truyện ngắn, và nghị luận...";
       }
     }
 
-    function goHome() {
+    function goHome() 
+    {
       document.getElementById("home").classList.remove("hidden");
       document.getElementById("detail").classList.add("hidden");
     }
