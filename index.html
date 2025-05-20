@@ -4,12 +4,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Danh sách sách</title>
   <style>
-    .hidden 
-    {
+    .hidden {
       display: none;
     }
-    .book 
-    {
+    .book {
       margin: 20px;
       padding: 10px;
       background-color: #eee;
@@ -30,52 +28,60 @@
   <div id="detail" class="hidden">
     <h2 id="bookTitle"></h2>
     <p id="bookInfo"></p>
-    <p2 id="morse"</p2>
+    <pre id="morse"></pre>
     <button onclick="goHome()">Quay lại</button>
   </div>
 
   <script>
-    const morseMap = 
-    {
-    A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.',
-    G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..',
-    M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.',
-    S: '...', T: '-', U: '..-', V: '...-', W: '.--', X: '-..-',
-    Y: '-.--', Z: '--..',
-    0: '-----', 1: '.----', 2: '..---', 3: '...--',
-    4: '....-', 5: '.....', 6: '-....', 7: '--...', 8: '---..', 9: '----.',
-    ' ': '/'
+    const morseMap = {
+      A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.',
+      G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..',
+      M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.',
+      S: '...', T: '-', U: '..-', V: '...-', W: '.--', X: '-..-',
+      Y: '-.--', Z: '--..',
+      0: '-----', 1: '.----', 2: '..---', 3: '...--',
+      4: '....-', 5: '.....', 6: '-....', 7: '--...', 8: '---..', 9: '----.',
+      ' ': '/'
     };
-    function textToMorse(text) 
-    {
-       return text.toUpperCase().split('').map(char => morseMap[char] || '').join(' ');
+
+    function textToMorse(text) {
+      return text.toUpperCase().split('').map(char => morseMap[char] || '').join(' ');
     }
-    function showDetail(book) 
-    {
+
+    async function showDetail(book) {
       document.getElementById("home").classList.add("hidden");
       document.getElementById("detail").classList.remove("hidden");
 
-      if (book === 'toan') 
-      {
+      if (book === 'toan') {
         document.getElementById("bookTitle").innerText = "Sách Toán lớp 9";
-        document.getElementById("bookInfo").innerText = "Nội dung gồm đại số và hình học...";
-        const text="Xin chao ban nha"
-        document.getElementById("morse").innerText=textToMorse(text);
+        try {
+          const response = await fetch('data/mytext.txt');
+          const text = await response.text();
+          document.getElementById("bookInfo").innerText = text;
+          document.getElementById("morse").innerText = textToMorse(text);
+        } catch (error) {
+          document.getElementById("bookInfo").innerText = "Không tải được nội dung sách Toán.";
+          document.getElementById("morse").innerText = "";
+          console.error('Lỗi khi fetch:', error);
+        }
       }
-      if (book === 'van') 
-      {
+
+      if (book === 'van') {
         document.getElementById("bookTitle").innerText = "Sách Ngữ Văn lớp 9";
-        document.getElementById("bookInfo").innerText = "Gồm thơ, truyện ngắn, và nghị luận...";
+        const text = "Gồm thơ, truyện ngắn, và nghị luận...";
+        document.getElementById("bookInfo").innerText = text;
+        document.getElementById("morse").innerText = textToMorse(text);
       }
     }
 
-    function goHome() 
-    {
+    function goHome() {
       document.getElementById("home").classList.remove("hidden");
       document.getElementById("detail").classList.add("hidden");
     }
-    
   </script>
+
+</body>
+</html>
 
 </body>
 </html>
