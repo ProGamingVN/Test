@@ -71,7 +71,7 @@
       if (book === 'toan') {
         document.getElementById("bookTitle").innerText = "Sách Toán lớp 9";
         try {
-          const response = await fetch('data/mytext.txt');
+          const response = await fetch('data/toan.txt');
           const text = await response.text();
           document.getElementById("bookInfo").innerText = text;
           const cleanText = normalizeVietnamese(text);
@@ -85,10 +85,18 @@
 
       if (book === 'van') {
         document.getElementById("bookTitle").innerText = "Sách Ngữ Văn lớp 9";
-        const text = "Gồm thơ, truyện ngắn, và nghị luận...";
-        document.getElementById("bookInfo").innerText = text;
-        const cleanText = normalizeVietnamese(text);
-        document.getElementById("morse").innerText = textToMorse(cleanText);
+        try 
+        {
+          const response = await fetch('data/van.txt');
+          const text = await response.text();
+          document.getElementById("bookInfo").innerText = text;
+          const cleanText = normalizeVietnamese(text);
+          document.getElementById("morse").innerText = textToMorse(cleanText);
+        } catch (error) {
+          document.getElementById("bookInfo").innerText = "Không tải được nội dung sách Toán.";
+          document.getElementById("morse").innerText = "";
+          console.error('Lỗi khi fetch:', error);
+        }
       }
     }
 
