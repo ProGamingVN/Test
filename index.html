@@ -251,23 +251,25 @@
   }
   cursor.addEventListener('click', function () 
   {
+    updateCursorLabelAtCenter(); // Cập nhật thông tin trước
+
     const rect = cursor.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    cursor.style.pointerEvents = 'none'; // tránh chọn chính nó
+    cursor.style.pointerEvents = 'none';
     const elem = document.elementFromPoint(centerX, centerY);
     cursor.style.pointerEvents = 'auto';
-
+  
     if (elem) 
     {
       const label = elem.innerText || elem.getAttribute('title') || elem.value || 'Có thể bấm';
       cursor.innerText = label.trim();
       cursor.dataset.target = label.trim();
 
-      // Nếu phần tử đó có hàm click, thì chạy
-      if (typeof elem.click === 'function') {
-        elem.click();
+      if (typeof elem.click === 'function') 
+      {
+        elem.click(); // Gọi ngay lập tức
       }
     } 
     else 
@@ -275,9 +277,8 @@
       cursor.innerText = '';
       cursor.dataset.target = '';
     }
- });
-
-
+  });
+  
 </script>
 </body>
 </html>
