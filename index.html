@@ -4,6 +4,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Danh sách</title>
   <style>
+  body.noscroll 
+  {
+  overflow: hidden;
+  touch-action: none;
+  }
+
     .round-button 
     {
   width: 50px;
@@ -226,7 +232,9 @@ document.addEventListener('touchmove', drag);
 document.addEventListener('mouseup', endDrag);
 document.addEventListener('touchend', endDrag);
 
-function startDrag(e) {
+function startDrag(e) 
+{
+  document.body.classList.add('noscroll');
   isDragging = true;
   const evt = e.touches ? e.touches[0] : e;
   offsetX = evt.clientX - cursor.offsetLeft;
@@ -258,6 +266,7 @@ function drag(e) {
 
 function endDrag() 
 {
+  document.body.classList.remove('noscroll');
   isDragging = false;
 }
 
