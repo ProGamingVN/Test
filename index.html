@@ -1,333 +1,226 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Danh sách</title>
   <style>
-  body.noscroll 
-  {
-  overflow: hidden;
-  touch-action: none;
-  }
-
-    .round-button 
-    {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-}
-    .hidden 
-    {
-      display: none;
+    body.noscroll {
+      overflow: hidden;
+      touch-action: none;
     }
-    .book 
-    {
+    .round-button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .hidden { display: none; }
+    .book {
       margin: 40px;
       padding: 10px;
       background-color: #eee;
       cursor: pointer;
     }
-    #morse 
-    {
-       white-space: pre-wrap; /* tự xuống dòng khi quá dài */
-       word-break: break-word; /* ngắt từ khi cần */
+    #morse {
+      white-space: pre-wrap;
+      word-break: break-word;
     }
-
   </style>
 </head>
 <body>
-  <div id="cursor"
-     style="position: fixed; top: 75%; left: 75%; width: 60px; height: 60px;
+<div id="cursor"
+     style="position: fixed; top: 77%; left: 23%; width: 60px; height: 60px;
             border-radius: 50%; background: rgba(0,0,0,0.3); color: white;
             display: flex; align-items: center; justify-content: center;
             font-size: 12px; z-index: 999;">
 </div>
 
-  <div style="position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px;">
-    <button onclick="identify()">Nhận diện</button>
-    <button onclick="vibrateMorse()">Bắt đầu rung</button>
-    <button onclick="togglePause()">Tạm dừng</button>
-    <button onclick="changeSpeed()">Tốc độ: <span id="speedLabel">1x</span></button>
-  </div>
-  
-  <div style="position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px;">
-    <button class="round-button" onclick="goHome()" title="Quay lại">↩</button>
-  </div>
-  <!-- Trang chủ: Danh sách sách -->
-  <div id="home">
-    <h1>Danh sách sách giáo khoa</h1>
-    <div class="book" onclick="showDetail('toan')">Sách Toán</div>
-    <div class="book" onclick="showDetail('van')">Sách Văn</div>
-  </div>
+<!-- Các nút chức năng -->
+<div style="position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px;">
+  <button onclick="identify()">Nhận diện</button>
+  <button onclick="vibrateMorse()">Bắt đầu rung</button>
+  <button onclick="togglePause()">Tạm dừng</button>
+  <button onclick="changeSpeed()">Tốc độ: <span id="speedLabel">1x</span></button>
+</div>
+<div style="position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px;">
+  <button class="round-button" onclick="goHome()" title="Quay lại">↩</button>
+</div>
 
-  <!-- Trang chi tiết -->
-  <div id="detail" class="hidden">
-    <h2 id="bookTitle"></h2>
-    <p id="bookInfo"></p>
-    <pre id="morse"></pre>
-  </div>
+<!-- Trang danh sách sách -->
+<div id="home">
+  <h1>Danh sách sách giáo khoa</h1>
+  <div class="book" onclick="showDetail('toan')">Sách Toán</div>
+  <div class="book" onclick="showDetail('van')">Sách Văn</div>
+</div>
 
-  <script>
-    const morseMap = {
-      A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.',
-      G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..',
-      M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.',
-      S: '...', T: '-', U: '..-', V: '...-', W: '.--', X: '-..-',
-      Y: '-.--', Z: '--..',
-      0: '-----', 1: '.----', 2: '..---', 3: '...--',
-      4: '....-', 5: '.....', 6: '-....', 7: '--...', 8: '---..', 9: '----.',
-      ' ': '/'
-    };
-    let isPaused = false;
+<!-- Trang chi tiết -->
+<div id="detail" class="hidden">
+  <h2 id="bookTitle"></h2>
+  <p id="bookInfo"></p>
+  <pre id="morse"></pre>
+</div>
 
-    function togglePause() 
-    {
-      isPaused = !isPaused;
-     document.querySelector('button[onclick="togglePause()"]').innerText = isPaused ? 'Tiếp tục' : 'Tạm dừng';
-    }
+<script>
+  const morseMap = {
+    A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.',
+    G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..',
+    M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.',
+    S: '...', T: '-', U: '..-', V: '...-', W: '.--', X: '-..-',
+    Y: '-.--', Z: '--..',
+    0: '-----', 1: '.----', 2: '..---', 3: '...--',
+    4: '....-', 5: '.....', 6: '-....', 7: '--...', 8: '---..', 9: '----.',
+    ' ': '/', '.': '.', ',': '--..--'
+  };
 
-    function normalizeVietnamese(text) 
-    {
-     return text
-    .normalize('NFD')                        // tách các ký tự dấu ra
-    .replace(/[\u0300-\u036f]/g, '')        // loại bỏ các ký tự dấu
-    .replace(/đ/g, 'd')
-    .replace(/Đ/g, 'D');
-    }
+  let isRunning = false;
+  let isPaused = false;
+  let speedMultiplier = 1;
 
-    function textToMorse(text) 
-    {
-      return text.toUpperCase().split('').map(char => morseMap[char] || '').join(' ');
-    }
-
-    function showDetail(book) 
-    {
-  resetCursorPosition();
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("detail").classList.remove("hidden");
-
-  // Tùy theo sách nào thì đặt tiêu đề tương ứng
-  let title = '';
-  if (book === 'toan') title = 'Sách Toán lớp 9';
-  else if (book === 'van') title = 'Sách Ngữ Văn lớp 9';
-  else title = 'Sách';
-
-  document.getElementById("bookTitle").innerText = title;
-
-  // Tải nội dung từ file tương ứng
-  fetch(`data/${book}.txt`)
-    .then(res => res.text())
-    .then(text => {
-      document.getElementById("bookInfo").innerText = text;
-      const noTone = normalizeVietnamese(text);
-      const morse = textToMorse(noTone);
-
-      // Gói từng ký tự Morse vào span để có thể highlight
-      const highlighted = morse.split('').map((c, i) => `<span id="m${i}">${c}</span>`).join('');
-      document.getElementById("morse").innerHTML = highlighted;
-    });
+  function togglePause() {
+    isPaused = !isPaused;
+    document.querySelector('button[onclick="togglePause()"]').innerText = isPaused ? 'Tiếp tục' : 'Tạm dừng';
   }
 
-let isRunning = false;
-function identify() {
-  if (isRunning) return;
-
-  const targetText = cursor.dataset.target || '';
-  if (!targetText) {
-    alert("Di chuyển cursor đến nút có nội dung cần rung!");
-    return;
+  function normalizeVietnamese(text) {
+    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
   }
 
-  const noTone = normalizeVietnamese(targetText);
-  const morse = textToMorse(noTone);
-  const highlighted = morse.split('').map((c, i) => `<span id="m${i}">${c}</span>`).join('');
-  document.getElementById("morse").innerHTML = highlighted;
+  function textToMorse(text) {
+    return text.toUpperCase().split('').map(c => morseMap[c] || '').join(' ');
+  }
 
-  const morseSpans = document.querySelectorAll("#morse span");
-  let i = 0;
-  isRunning = true;
+  function showDetail(book) {
+    resetCursorPosition();
+    document.getElementById("home").classList.add("hidden");
+    document.getElementById("detail").classList.remove("hidden");
 
-  function step() {
-    if (i >= morseSpans.length) {
-      isRunning = false;
-      return;
-    }
-    if (isPaused) {
-      setTimeout(step, 200);
+    let title = book === 'toan' ? 'Sách Toán lớp 9' : 'Sách Ngữ Văn lớp 9';
+    document.getElementById("bookTitle").innerText = title;
+
+    fetch(`data/${book}.txt`)
+      .then(res => res.text())
+      .then(text => {
+        document.getElementById("bookInfo").innerText = text;
+        const morse = textToMorse(normalizeVietnamese(text));
+        document.getElementById("morse").innerHTML = morse.split('').map((c, i) => `<span id="m${i}">${c}</span>`).join('');
+      });
+  }
+
+  function identify() {
+    if (isRunning) return;
+
+    const text = cursor.dataset.target;
+    if (!text) {
+      alert("Di chuyển cursor đến nút có nội dung cần rung!");
       return;
     }
 
-    if (i > 0) morseSpans[i - 1].style.background = "";
-    const char = morseSpans[i].innerText;
-    morseSpans[i].style.background = "yellow";
-
-    let duration = 0;
-    if (char === '.') duration = 100;
-    else if (char === '-') duration = 300;
-
-    navigator.vibrate(duration);
-    i++;
-    setTimeout(step, (duration + 150) / speedMultiplier);
-    if (i === morseSpans.length) morseSpans[i - 1].style.background = "";
+    const morse = textToMorse(normalizeVietnamese(text));
+    document.getElementById("morse").innerHTML = morse.split('').map((c, i) => `<span id="m${i}">${c}</span>`).join('');
+    vibrateMorse();
   }
 
-  step();
-}
-function vibrateMorse() 
-{
-  if (isRunning) return;  // Nếu đang chạy thì không chạy lại
-  isRunning = true;
+  function vibrateMorse() {
+    if (isRunning) return;
+    const spans = document.querySelectorAll("#morse span");
+    let i = 0;
+    isRunning = true;
 
-  const morseSpans = document.querySelectorAll("#morse span");
-  let i = 0;
+    function step() {
+      if (!isRunning || i >= spans.length) {
+        isRunning = false;
+        return;
+      }
+      if (isPaused) {
+        setTimeout(step, 200);
+        return;
+      }
 
-  function step() 
-  {
-    if (isRunning==false)
-    {
-      return;
+      spans.forEach(span => span.style.background = '');
+      spans[i].style.background = "yellow";
+
+      const c = spans[i].innerText;
+      const dur = c === '.' ? 100 : c === '-' ? 300 : 0;
+      navigator.vibrate(dur);
+
+      i++;
+      setTimeout(step, (dur + 150) / speedMultiplier);
     }
-    if (i >= morseSpans.length) 
-    {
-      isRunning = false;  // kết thúc rung
-      return;
+    step();
+  }
+
+  function changeSpeed() {
+    speedMultiplier = speedMultiplier === 1 ? 2 : speedMultiplier === 2 ? 0.5 : 1;
+    document.getElementById("speedLabel").innerText = `${speedMultiplier}x`;
+  }
+
+  function goHome() {
+    resetCursorPosition();
+    navigator.vibrate(0);
+    isRunning = false;
+    isPaused = false;
+    document.querySelectorAll("#morse span").forEach(span => span.style.background = '');
+    document.getElementById("home").classList.remove("hidden");
+    document.getElementById("detail").classList.add("hidden");
+    document.getElementById("morse").innerHTML = '';
+    const pauseBtn = document.querySelector('button[onclick="togglePause()"]');
+    if (pauseBtn) pauseBtn.innerText = 'Tạm dừng';
+  }
+
+  function resetCursorPosition() {
+    cursor.style.top = '75%';
+    cursor.style.left = '75%';
+  }
+
+  const cursor = document.getElementById('cursor');
+  let offsetX = 0, offsetY = 0, dragging = false;
+
+  cursor.addEventListener('mousedown', startDrag);
+  cursor.addEventListener('touchstart', startDrag);
+  document.addEventListener('mousemove', drag);
+  document.addEventListener('touchmove', drag);
+  document.addEventListener('mouseup', endDrag);
+  document.addEventListener('touchend', endDrag);
+
+  function startDrag(e) {
+    document.body.classList.add('noscroll');
+    dragging = true;
+    const evt = e.touches ? e.touches[0] : e;
+    offsetX = evt.clientX - cursor.offsetLeft;
+    offsetY = evt.clientY - cursor.offsetTop;
+  }
+
+  function drag(e) {
+    if (!dragging) return;
+    const evt = e.touches ? e.touches[0] : e;
+    const x = evt.clientX - offsetX;
+    const y = evt.clientY - offsetY;
+    cursor.style.left = x + 'px';
+    cursor.style.top = y + 'px';
+
+    cursor.style.pointerEvents = 'none';
+    const elem = document.elementFromPoint(evt.clientX, evt.clientY);
+    cursor.style.pointerEvents = 'auto';
+
+    if (elem && (elem.onclick || elem.hasAttribute('onclick'))) {
+      const label = elem.innerText || elem.getAttribute('title') || 'Có thể bấm';
+      cursor.innerText = label.trim();
+      cursor.dataset.target = label.trim();
+    } else {
+      cursor.innerText = '';
+      cursor.dataset.target = '';
     }
-
-    if (isPaused) {
-      setTimeout(step, 200);
-      return;
-    }
-
-    if (i > 0) morseSpans[i - 1].style.background = "";
-
-    const char = morseSpans[i].innerText;
-    morseSpans[i].style.background = "yellow";
-
-    let duration = 0;
-    if (char === '.') duration = 100;
-    else if (char === '-') duration = 300;
-    else if (char === ' ') duration = 0;
-    else if (char === '/') duration = 0;
-
-    navigator.vibrate(duration);
-
-    i++;
-    setTimeout(step, (duration + 150) / speedMultiplier);
-    if (i === morseSpans.length) morseSpans[i - 1].style.background = "";
   }
 
-  step();
-}
-  
-let speedMultiplier = 1; // Mặc định 1x
-
-function changeSpeed() {
-  if (speedMultiplier === 1) {
-    speedMultiplier = 2;
-  } else if (speedMultiplier === 2) {
-    speedMultiplier = 0.5;
-  } else {
-    speedMultiplier = 1;
+  function endDrag() {
+    document.body.classList.remove('noscroll');
+    dragging = false;
   }
-
-  document.getElementById("speedLabel").innerText = `${speedMultiplier}x`;
-}
-
-
-    function goHome() 
-{
-  resetCursorPosition();
-  // Ngắt rung ngay lập tức
-  navigator.vibrate(0);
-
-  // Reset trạng thái
-  isRunning = false;
-  isPaused = false;
-
-  // Xóa highlight nếu còn
-  const morseSpans = document.querySelectorAll("#morse span");
-  morseSpans.forEach(span => span.style.background = '');
-
-  // Chuyển về trang chủ
-  document.getElementById("home").classList.remove("hidden");
-  document.getElementById("detail").classList.add("hidden");
-  document.getElementById("morse").innerHTML = '';
-
-  // Reset nút tạm dừng về trạng thái ban đầu
-  const pauseBtn = document.querySelector('button[onclick="togglePause()"]');
-  if (pauseBtn) pauseBtn.innerText = 'Tạm dừng';
-}
-
-
-    //cursor
-function resetCursorPosition() 
-{
-  cursor.style.top = '75%';
-  cursor.style.left = '75%';
-}
-const cursor = document.getElementById('cursor');
-let offsetX = 0, offsetY = 0;
-let isDragging = false;
-
-// Kéo bằng touch hoặc chuột
-cursor.addEventListener('mousedown', startDrag);
-cursor.addEventListener('touchstart', startDrag);
-
-document.addEventListener('mousemove', drag);
-document.addEventListener('touchmove', drag);
-
-document.addEventListener('mouseup', endDrag);
-document.addEventListener('touchend', endDrag);
-
-function startDrag(e) 
-{
-  document.body.classList.add('noscroll');
-  isDragging = true;
-  const evt = e.touches ? e.touches[0] : e;
-  offsetX = evt.clientX - cursor.offsetLeft;
-  offsetY = evt.clientY - cursor.offsetTop;
-}
-
-function drag(e) 
-{
-  if (!isDragging) return;
-  const evt = e.touches ? e.touches[0] : e;
-  const x = evt.clientX - offsetX;
-  const y = evt.clientY - offsetY;
-
-  cursor.style.left = x + 'px';
-  cursor.style.top = y + 'px';
-
-  // Kiểm tra phần tử nằm dưới cursor
-  cursor.style.pointerEvents = 'none'; // tránh chính nó bị chọn
-  const elemBelow = document.elementFromPoint(evt.clientX, evt.clientY);
-  cursor.style.pointerEvents = 'auto';
-
-  // Nếu phần tử có thuộc tính onclick
-  if (elemBelow && (elemBelow.onclick || elemBelow.hasAttribute('onclick'))) {
-    // Ưu tiên hiển thị text của nút hoặc thẻ
-    const label = elemBelow.innerText || elemBelow.getAttribute('title') || 'Có thể bấm';
-    cursor.innerText = label.trim();
-    cursor.dataset.target = label.trim();
-  } else {
-    cursor.innerText = '';
-    cursor.dataset.target = '';
-  }
-}
-
-
-function endDrag() 
-{
-  document.body.classList.remove('noscroll');
-  isDragging = false;
-}
-
-  </script>
-
-  </body>
+</script>
+</body>
 </html>
