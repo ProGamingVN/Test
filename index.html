@@ -106,6 +106,7 @@
 
     function showDetail(book) 
     {
+  resetCursorPosition();
   document.getElementById("home").classList.add("hidden");
   document.getElementById("detail").classList.remove("hidden");
 
@@ -195,6 +196,7 @@ function changeSpeed() {
 
     function goHome() 
 {
+  resetCursorPosition();
   // Ngắt rung ngay lập tức
   navigator.vibrate(0);
 
@@ -218,7 +220,12 @@ function changeSpeed() {
 
 
     //cursor
-    const cursor = document.getElementById('cursor');
+function resetCursorPosition() 
+{
+  cursor.style.top = '75%';
+  cursor.style.left = '75%';
+}
+const cursor = document.getElementById('cursor');
 let offsetX = 0, offsetY = 0;
 let isDragging = false;
 
