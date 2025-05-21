@@ -89,9 +89,3 @@ let isRunning = false;
     const pauseBtn = document.querySelector('button[onclick="togglePause()"]');
     if (pauseBtn) pauseBtn.innerText = 'Tạm dừng';
   }
-  function resetCursorPosition() 
-  {
-    cursor.style.top = '75%';
-    cursor.style.left = '75%';
-  }
-
