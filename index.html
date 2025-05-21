@@ -49,6 +49,7 @@
 </div>
 
   <div style="position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px;">
+    <button onclick="identify()">Nhận diện</button>
     <button onclick="vibrateMorse()">Bắt đầu rung</button>
     <button onclick="togglePause()">Tạm dừng</button>
     <button onclick="changeSpeed()">Tốc độ: <span id="speedLabel">1x</span></button>
@@ -133,7 +134,7 @@
   }
 
 let isRunning = false;
-function vibrateMorse() {
+function identify() {
   if (isRunning) return;
 
   const targetText = cursor.dataset.target || '';
@@ -177,7 +178,53 @@ function vibrateMorse() {
 
   step();
 }
+let isRunning = false;
+function vibrateMorse() 
+{
+  if (isRunning) return;  // Nếu đang chạy thì không chạy lại
+  isRunning = true;
 
+  const morseSpans = document.querySelectorAll("#morse span");
+  let i = 0;
+
+  function step() 
+  {
+    if (isRunning==false)
+    {
+      return;
+    }
+    if (i >= morseSpans.length) 
+    {
+      isRunning = false;  // kết thúc rung
+      return;
+    }
+
+    if (isPaused) {
+      setTimeout(step, 200);
+      return;
+    }
+
+    if (i > 0) morseSpans[i - 1].style.background = "";
+
+    const char = morseSpans[i].innerText;
+    morseSpans[i].style.background = "yellow";
+
+    let duration = 0;
+    if (char === '.') duration = 100;
+    else if (char === '-') duration = 300;
+    else if (char === ' ') duration = 0;
+    else if (char === '/') duration = 0;
+
+    navigator.vibrate(duration);
+
+    i++;
+    setTimeout(step, (duration + 150) / speedMultiplier);
+    if (i === morseSpans.length) morseSpans[i - 1].style.background = "";
+  }
+
+  step();
+}
+  
 let speedMultiplier = 1; // Mặc định 1x
 
 function changeSpeed() {
