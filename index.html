@@ -164,10 +164,27 @@ function changeSpeed() {
 
 
     function goHome() 
-    {
-      document.getElementById("home").classList.remove("hidden");
-      document.getElementById("detail").classList.add("hidden");
-    }
+{
+  // Ngắt rung ngay lập tức
+  navigator.vibrate(0);
+
+  // Reset trạng thái
+  isRunning = false;
+  isPaused = false;
+
+  // Xóa highlight nếu còn
+  const morseSpans = document.querySelectorAll("#morse span");
+  morseSpans.forEach(span => span.style.background = '');
+
+  // Chuyển về trang chủ
+  document.getElementById("home").classList.remove("hidden");
+  document.getElementById("detail").classList.add("hidden");
+
+  // Reset nút tạm dừng về trạng thái ban đầu
+  const pauseBtn = document.querySelector('button[onclick="togglePause()"]');
+  if (pauseBtn) pauseBtn.innerText = 'Tạm dừng';
+}
+
   </script>
 
   </body>
