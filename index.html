@@ -85,34 +85,43 @@
     .then(text => {
       document.getElementById("bookInfo").innerText = text;
       const noTone = normalizeVietnamese(text);
-      document.getElementById("morse").innerText = textToMorse(noTone);
-    })
-    .catch(err => {
-      document.getElementById("bookInfo").innerText = 'Không thể tải nội dung.';
-      document.getElementById("morse").innerText = '';
-      console.error('Lỗi:', err);
+      const morse = textToMorse(noTone);
+
+      // Gói từng ký tự Morse vào span để có thể highlight
+      const highlighted = morse.split('').map((c, i) => `<span id="m${i}">${c}</span>`).join('');
+      document.getElementById("morse").innerHTML = highlighted;
     });
   }
-    function vibrateMorse() 
-{
-  const morseText = document.getElementById("morse").innerText;
-  const pattern = [];
+    function vibrateMorse() {
+  const morseSpans = document.querySelectorAll("#morse span");
+  let i = 0;
 
-  for (let char of morseText) 
-  {
-    if (char === '.') {
-      pattern.push(100, 100); // chấm: rung 100ms, nghỉ 100ms
-    } else if (char === '-') {
-      pattern.push(300, 100); // gạch: rung 300ms, nghỉ 100ms
-    } else if (char === '/') {
-      pattern.push(0, 400);   // dấu cách giữa từ: nghỉ 400ms
-    } else if (char === ' ') {
-      pattern.push(0, 200);   // dấu cách giữa chữ: nghỉ 200ms
-    }
+  function step() {
+    if (i >= morseSpans.length) return;
+
+    // Xóa highlight trước đó
+    if (i > 0) morseSpans[i - 1].style.background = "";
+
+    const char = morseSpans[i].innerText;
+    morseSpans[i].style.background = "yellow";
+
+    let duration = 0;
+    if (char === '.') duration = 100;
+    else if (char === '-') duration = 300;
+    else if (char === ' ') duration = 0;    // khoảng cách giữa chữ
+    else if (char === '/') duration = 0;    // khoảng cách giữa từ
+
+    navigator.vibrate(duration);
+
+    i++;
+    setTimeout(step, duration + 150); // +150ms nghỉ giữa ký tự
+    if (i === morseSpans.length) morseSpans[i - 1].style.background = "";
+
   }
 
-  navigator.vibrate(pattern);
+  step();
 }
+
     function goHome() 
     {
       document.getElementById("home").classList.remove("hidden");
