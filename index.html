@@ -116,6 +116,10 @@ function vibrateMorse()
 
   function step() 
   {
+    if (isRunning==false)
+    {
+      return;
+    }
     if (i >= morseSpans.length) 
     {
       isRunning = false;  // kết thúc rung
