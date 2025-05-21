@@ -9,8 +9,7 @@
       overflow: hidden;
       touch-action: none;
     }
-    .round-button 
-    {
+    .round-button {
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -67,7 +66,8 @@
 </div>
 
 <script>
-  const morseMap = {
+  const morseMap = 
+  {
     A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.',
     G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..',
     M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.',
@@ -118,9 +118,7 @@
 
   function identify() 
   {
-    if (isRunning) return;
-
-    const text = cursor.dataset.target;
+    const text = cursor.innerText;
     if (!text) 
     {
       alert("Di chuyển cursor đến nút có nội dung cần rung!");
@@ -191,30 +189,7 @@
   }
 
   const cursor = document.getElementById('cursor');
-  
   let offsetX = 0, offsetY = 0, dragging = false;
-  function updateCursorLabelAtCenter() 
-  {
-    const rect = cursor.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    cursor.style.pointerEvents = 'none';
-    const elem = document.elementFromPoint(centerX, centerY);
-    cursor.style.pointerEvents = 'auto';
-
-    if (elem && (elem.onclick || elem.hasAttribute('onclick'))) 
-    {
-      const label = elem.innerText || elem.getAttribute('title') || elem.value || '';
-      cursor.innerText = label.trim();
-      cursor.dataset.target = label.trim();
-    } 
-    else 
-    {
-      cursor.innerText = '';
-      cursor.dataset.target = '';
-    }
-  }
 
   cursor.addEventListener('mousedown', startDrag);
   cursor.addEventListener('touchstart', startDrag);
@@ -241,53 +216,13 @@
     const y = evt.clientY - offsetY;
     cursor.style.left = x + 'px';
     cursor.style.top = y + 'px';
-    updateCursorLabelAtCenter();
-  } 
+  }
 
   function endDrag() 
   {
     document.body.classList.remove('noscroll');
     dragging = false;
   }
-  
-  cursor.addEventListener('click', function () 
-  {
-    updateCursorLabelAtCenter(); // đảm bảo lấy đúng text dưới con trỏ
-
-    const rect = cursor.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    cursor.style.pointerEvents = 'none';
-    const elem = document.elementFromPoint(centerX, centerY);
-    cursor.style.pointerEvents = 'auto';
-
-    if (elem) 
-    {
-      const label = elem.innerText || elem.getAttribute('title') || elem.value || 'Có thể bấm';
-      cursor.innerText = label.trim();
-      cursor.dataset.target = label.trim();
-      console.log('Elem click target:', label);
-
-    // Gọi sự kiện click
-      if (typeof elem.click === 'function') 
-      {
-        elem.click();
-      } 
-      else 
-      {
-        console.warn('Elem không thể click');
-      }
-    }
-    else 
-    {
-      console.warn('Không tìm thấy phần tử bên dưới');
-      cursor.innerText = '';
-      cursor.dataset.target = '';
-    }
-  });
-
-  
 </script>
 </body>
 </html>
