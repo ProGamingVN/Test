@@ -249,9 +249,10 @@
     document.body.classList.remove('noscroll');
     dragging = false;
   }
+  
   cursor.addEventListener('click', function () 
   {
-    updateCursorLabelAtCenter(); // Cập nhật thông tin trước
+    updateCursorLabelAtCenter(); // đảm bảo lấy đúng text dưới con trỏ
 
     const rect = cursor.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -260,24 +261,32 @@
     cursor.style.pointerEvents = 'none';
     const elem = document.elementFromPoint(centerX, centerY);
     cursor.style.pointerEvents = 'auto';
-  
+
     if (elem) 
     {
       const label = elem.innerText || elem.getAttribute('title') || elem.value || 'Có thể bấm';
       cursor.innerText = label.trim();
       cursor.dataset.target = label.trim();
+      console.log('Elem click target:', label);
 
+    // Gọi sự kiện click
       if (typeof elem.click === 'function') 
       {
-        elem.click(); // Gọi ngay lập tức
+        elem.click();
+      } 
+      else 
+      {
+        console.warn('Elem không thể click');
       }
-    } 
+    }
     else 
     {
+      console.warn('Không tìm thấy phần tử bên dưới');
       cursor.innerText = '';
       cursor.dataset.target = '';
     }
   });
+
   
 </script>
 </body>
