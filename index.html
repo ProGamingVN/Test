@@ -227,8 +227,8 @@
 
   function startDrag(e) 
   {
-    document.body.classList.add('noscroll');
     navigator.vibrate(100);
+    document.body.classList.add('noscroll');
     dragging = true;
     const evt = e.touches ? e.touches[0] : e;
     offsetX = evt.clientX - cursor.offsetLeft;
