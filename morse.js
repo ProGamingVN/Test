@@ -1,4 +1,5 @@
-const morseMap = {
+const morseMap = 
+  {
     A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.',
     G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..',
     M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.',
@@ -9,24 +10,20 @@ const morseMap = {
     ' ': '/', '.': '.', ',': '--..--'
   };
 
-  let isRunning = false;
-  let isPaused = false;
-  let speedMultiplier = 1;
+  
 
-  function togglePause() {
-    isPaused = !isPaused;
-    document.querySelector('button[onclick="togglePause()"]').innerText = isPaused ? 'Tiếp tục' : 'Tạm dừng';
-  }
-
-  function normalizeVietnamese(text) {
+  function normalizeVietnamese(text) 
+  {
     return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
   }
 
-  function textToMorse(text) {
+  function textToMorse(text) 
+  {
     return text.toUpperCase().split('').map(c => morseMap[c] || '').join(' ');
   }
 
-  function showDetail(book) {
+  function showDetail(book) 
+  {
     resetCursorPosition();
     document.getElementById("home").classList.add("hidden");
     document.getElementById("detail").classList.remove("hidden");
@@ -43,7 +40,8 @@ const morseMap = {
       });
   }
 
-  function identify() {
+  function identify() 
+  {
     const text = cursor.innerText;
     if (!text) {
       alert("Di chuyển cursor đến nút có nội dung cần rung!");
