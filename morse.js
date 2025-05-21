@@ -22,9 +22,3 @@ const morseMap =
     return text.toUpperCase().split('').map(c => morseMap[c] || '').join(' ');
   }
 
-  function resetCursorPosition() 
-  {
-    cursor.style.top = '75%';
-    cursor.style.left = '75%';
-  }
-
