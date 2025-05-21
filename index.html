@@ -185,6 +185,9 @@
   document.addEventListener('mouseup', endDrag);
   document.addEventListener('touchend', endDrag);
 
+  cursor.addEventListener('mousedown', () => navigator.vibrate(100));
+  cursor.addEventListener('touchstart', () => navigator.vibrate(100));
+
   function startDrag(e) {
     document.body.classList.add('noscroll');
     navigator.vibrate(100);
