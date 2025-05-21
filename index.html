@@ -197,6 +197,8 @@ function changeSpeed() {
   document.getElementById("home").classList.remove("hidden");
   document.getElementById("detail").classList.add("hidden");
 
+  morse='';
+  morseSpans='';
   // Reset nút tạm dừng về trạng thái ban đầu
   const pauseBtn = document.querySelector('button[onclick="togglePause()"]');
   if (pauseBtn) pauseBtn.innerText = 'Tạm dừng';
