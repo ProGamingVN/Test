@@ -38,13 +38,15 @@ let isRunning = false;
     vibrateMorse();
   }
 
-  function vibrateMorse() {
+  function vibrateMorse() 
+  {
     if (isRunning) return;
     const spans = document.querySelectorAll("#morse span");
     let i = 0;
     isRunning = true;
 
-    function step() {
+    function step() 
+    {
       if (!isRunning || i >= spans.length) {
         isRunning = false;
         return;
@@ -67,17 +69,20 @@ let isRunning = false;
     step();
   }
 
-  function changeSpeed() {
+  function changeSpeed() 
+  {
     speedMultiplier = speedMultiplier === 1 ? 2 : speedMultiplier === 2 ? 0.5 : 1;
     document.getElementById("speedLabel").innerText = `${speedMultiplier}x`;
   }
 
-  function goHome() {
+  function goHome() 
+  {
     resetCursorPosition();
     navigator.vibrate(0);
     isRunning = false;
     isPaused = false;
     document.querySelectorAll("#morse span").forEach(span => span.style.background = '');
+  }
     document.getElementById("home").classList.remove("hidden");
     document.getElementById("detail").classList.add("hidden");
     document.getElementById("morse").innerHTML = '';
