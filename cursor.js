@@ -1,4 +1,5 @@
-const cursor = document.getElementById('cursor');
+document.addEventListener('DOMContentLoaded', () => {
+  const cursor = document.getElementById('cursor');
   let offsetX = 0, offsetY = 0, dragging = false;
 
   cursor.addEventListener('mousedown', startDrag);
@@ -11,8 +12,7 @@ const cursor = document.getElementById('cursor');
   cursor.addEventListener('mousedown', () => navigator.vibrate(100));
   cursor.addEventListener('touchstart', () => navigator.vibrate(100));
 
-  function startDrag(e) 
-  {
+  function startDrag(e) {
     document.body.classList.add('noscroll');
     dragging = true;
     const evt = e.touches ? e.touches[0] : e;
@@ -20,8 +20,7 @@ const cursor = document.getElementById('cursor');
     offsetY = evt.clientY - cursor.offsetTop;
   }
 
-  function drag(e) 
-  {
+  function drag(e) {
     if (!dragging) return;
     const evt = e.touches ? e.touches[0] : e;
     const x = evt.clientX - offsetX;
@@ -30,13 +29,15 @@ const cursor = document.getElementById('cursor');
     cursor.style.top = y + 'px';
   }
 
-  function endDrag() 
-  {
+  function endDrag() {
     document.body.classList.remove('noscroll');
     dragging = false;
   }
-  function resetCursorPosition() 
-  {
+
+  // Xuất biến và hàm ra toàn cục
+  window.cursor = cursor;
+  window.resetCursorPosition = function () {
     cursor.style.top = '75%';
     cursor.style.left = '75%';
-  }
+  };
+});
