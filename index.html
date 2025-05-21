@@ -29,7 +29,10 @@
     <button onclick="togglePause()">Tạm dừng</button>
     <button onclick="changeSpeed()">Tốc độ: <span id="speedLabel">1x</span></button>
   </div>
-
+  
+  <div style="position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px;">
+    <button onclick="goHome()">Quay lại</button>
+  </div>
   <!-- Trang chủ: Danh sách sách -->
   <div id="home">
     <h1>Danh sách sách giáo khoa</h1>
@@ -42,7 +45,6 @@
     <h2 id="bookTitle"></h2>
     <p id="bookInfo"></p>
     <pre id="morse"></pre>
-    <button onclick="goHome()">Quay lại</button>
   </div>
 
   <script>
