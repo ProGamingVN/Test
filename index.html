@@ -104,21 +104,29 @@
       document.getElementById("morse").innerHTML = highlighted;
     });
   }
-    function vibrateMorse() 
+
+let isRunning = false;
+function vibrateMorse() 
 {
+  if (isRunning) return;  // Nếu đang chạy thì không chạy lại
+  isRunning = true;
+
   const morseSpans = document.querySelectorAll("#morse span");
   let i = 0;
 
   function step() 
   {
-    if (i >= morseSpans.length) return;
+    if (i >= morseSpans.length) 
+    {
+      isRunning = false;  // kết thúc rung
+      return;
+    }
 
-      if (isPaused) 
-      {
-       setTimeout(step, 200); // chờ 200ms rồi kiểm tra lại
-       return;
-      }
-    // Xóa highlight trước đó
+    if (isPaused) {
+      setTimeout(step, 200);
+      return;
+    }
+
     if (i > 0) morseSpans[i - 1].style.background = "";
 
     const char = morseSpans[i].innerText;
@@ -127,19 +135,19 @@
     let duration = 0;
     if (char === '.') duration = 100;
     else if (char === '-') duration = 300;
-    else if (char === ' ') duration = 0;    // khoảng cách giữa chữ
-    else if (char === '/') duration = 0;    // khoảng cách giữa từ
+    else if (char === ' ') duration = 0;
+    else if (char === '/') duration = 0;
 
     navigator.vibrate(duration);
 
     i++;
     setTimeout(step, (duration + 150) / speedMultiplier);
     if (i === morseSpans.length) morseSpans[i - 1].style.background = "";
-
   }
 
   step();
 }
+
 let speedMultiplier = 1; // Mặc định 1x
 
 function changeSpeed() {
