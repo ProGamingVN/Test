@@ -191,7 +191,30 @@
   }
 
   const cursor = document.getElementById('cursor');
+  
   let offsetX = 0, offsetY = 0, dragging = false;
+  function updateCursorLabelAtCenter() 
+  {
+    const rect = cursor.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    cursor.style.pointerEvents = 'none';
+    const elem = document.elementFromPoint(centerX, centerY);
+    cursor.style.pointerEvents = 'auto';
+
+    if (elem && (elem.onclick || elem.hasAttribute('onclick'))) 
+    {
+      const label = elem.innerText || elem.getAttribute('title') || elem.value || '';
+      cursor.innerText = label.trim();
+      cursor.dataset.target = label.trim();
+    } 
+    else 
+    {
+      cursor.innerText = '';
+      cursor.dataset.target = '';
+    }
+  }
 
   cursor.addEventListener('mousedown', startDrag);
   cursor.addEventListener('touchstart', startDrag);
@@ -218,22 +241,8 @@
     const y = evt.clientY - offsetY;
     cursor.style.left = x + 'px';
     cursor.style.top = y + 'px';
-
-    cursor.style.pointerEvents = 'none';
-    const elem = document.elementFromPoint(evt.clientX, evt.clientY);
-    cursor.style.pointerEvents = 'auto';
-
-    if (elem && (elem.onclick || elem.hasAttribute('onclick'))) 
-    {
-       const label = elem.innerText || elem.getAttribute('title') || 'Có thể bấm';
-       if (cursor.dataset.lastLabel !== label.trim()) {
-       // Rung một cái ngắn khi đổi phần tử mới
-       navigator.vibrate(50);
-       cursor.dataset.lastLabel = label.trim();
-    }
-    cursor.innerText = label.trim();
-    cursor.dataset.target = label.trim();
-    } 
+    updateCursorLabelAtCenter();
+  } 
     else 
     {
        cursor.innerText = '';
@@ -249,19 +258,32 @@
   }
   cursor.addEventListener('click', function () 
   {
-  const rect = cursor.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
+    const rect = cursor.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
 
-  cursor.style.pointerEvents = 'none'; // tránh chọn chính nó
-  const elem = document.elementFromPoint(centerX, centerY);
-  cursor.style.pointerEvents = 'auto';
+    cursor.style.pointerEvents = 'none'; // tránh chọn chính nó
+    const elem = document.elementFromPoint(centerX, centerY);
+    cursor.style.pointerEvents = 'auto';
 
-  if (elem && typeof elem.click === 'function') 
-  {
-    elem.click();
-  }
-  });
+    if (elem) 
+    {
+      const label = elem.innerText || elem.getAttribute('title') || elem.value || 'Có thể bấm';
+      cursor.innerText = label.trim();
+      cursor.dataset.target = label.trim();
+
+      // Nếu phần tử đó có hàm click, thì chạy
+      if (typeof elem.click === 'function') {
+        elem.click();
+      }
+    } 
+    else 
+    {
+      cursor.innerText = '';
+      cursor.dataset.target = '';
+    }
+ });
+
 
 </script>
 </body>
