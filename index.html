@@ -164,7 +164,7 @@
 
   function changeSpeed() 
   {
-    speedMultiplier = speedMultiplier === 1 ? 2 : speedMultiplier === 2 ? 0.5 : 1;
+    speedMultiplier = speedMultiplier === 1 ? 1.5 : speedMultiplier === 1.5 ? 2 : speedMultiplier === 2 ? 0.5 : speedMultiplier === 0.5 ? 0.75 : 1;
     document.getElementById("speedLabel").innerText = `${speedMultiplier}x`;
   }
 
