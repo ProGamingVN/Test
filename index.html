@@ -35,7 +35,7 @@
   </style>
 </head>
 <body>
-  <div id="cursor" style="position: absolute; top: 70%; left: 70%; width: 60px; height: 60px; border-radius: 50%; background: rgba(0,0,0,0.3); color: white; display: flex; align-items: center; justify-content: center; pointer-events: none; font-size: 12px;"></div>
+  <div id="cursor" style="position: absolute; top: 75%; left: 75%; width: 60px; height: 60px; border-radius: 50%; background: rgba(0,0,0,0.3); color: white; display: flex; align-items: center; justify-content: center; pointer-events: none; font-size: 12px;"></div>
   <div style="position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px;">
     <button onclick="vibrateMorse()">Bắt đầu rung</button>
     <button onclick="togglePause()">Tạm dừng</button>
@@ -202,6 +202,57 @@ function changeSpeed() {
   // Reset nút tạm dừng về trạng thái ban đầu
   const pauseBtn = document.querySelector('button[onclick="togglePause()"]');
   if (pauseBtn) pauseBtn.innerText = 'Tạm dừng';
+}
+
+
+    //cursor
+    const cursor = document.getElementById('cursor');
+let offsetX = 0, offsetY = 0;
+let isDragging = false;
+
+// Kéo bằng touch hoặc chuột
+cursor.addEventListener('mousedown', startDrag);
+cursor.addEventListener('touchstart', startDrag);
+
+document.addEventListener('mousemove', drag);
+document.addEventListener('touchmove', drag);
+
+document.addEventListener('mouseup', endDrag);
+document.addEventListener('touchend', endDrag);
+
+function startDrag(e) {
+  isDragging = true;
+  const evt = e.touches ? e.touches[0] : e;
+  offsetX = evt.clientX - cursor.offsetLeft;
+  offsetY = evt.clientY - cursor.offsetTop;
+}
+
+function drag(e) {
+  if (!isDragging) return;
+  const evt = e.touches ? e.touches[0] : e;
+  const x = evt.clientX - offsetX;
+  const y = evt.clientY - offsetY;
+
+  cursor.style.left = x + 'px';
+  cursor.style.top = y + 'px';
+
+  // Kiểm tra phần tử nằm dưới cursor
+  cursor.style.pointerEvents = 'none'; // tránh chính nó bị chọn
+  const elemBelow = document.elementFromPoint(evt.clientX, evt.clientY);
+  cursor.style.pointerEvents = 'auto';
+
+  if (elemBelow && elemBelow.tagName === 'BUTTON') {
+    cursor.innerText = elemBelow.innerText;
+    cursor.dataset.target = elemBelow.innerText;
+  } else {
+    cursor.innerText = '';
+    cursor.dataset.target = '';
+  }
+}
+
+function endDrag() 
+{
+  isDragging = false;
 }
 
   </script>
