@@ -137,15 +137,18 @@
 }
 let speedMultiplier = 1; // Mặc định 1x
 
-function changeSpeed() 
-{
-  if (speedMultiplier === 1) speedMultiplier = 1;
-  else if (speedMultiplier === 2) speedMultiplier = 0.5;
-  else if (speedMultiplier === 0.5) speedMultiplier = 2;
-  else speedMultiplier = 1;
+ffunction changeSpeed() {
+  if (speedMultiplier === 1) {
+    speedMultiplier = 2;
+  } else if (speedMultiplier === 2) {
+    speedMultiplier = 0.5;
+  } else {
+    speedMultiplier = 1;
+  }
 
   document.getElementById("speedControl").innerText = `Tốc độ: ${speedMultiplier}x`;
 }
+
     function goHome() 
     {
       document.getElementById("home").classList.remove("hidden");
