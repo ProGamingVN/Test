@@ -247,7 +247,8 @@ function startDrag(e)
   offsetY = evt.clientY - cursor.offsetTop;
 }
 
-function drag(e) {
+function drag(e) 
+{
   if (!isDragging) return;
   const evt = e.touches ? e.touches[0] : e;
   const x = evt.clientX - offsetX;
@@ -261,14 +262,18 @@ function drag(e) {
   const elemBelow = document.elementFromPoint(evt.clientX, evt.clientY);
   cursor.style.pointerEvents = 'auto';
 
-  if (elemBelow && elemBelow.tagName === 'BUTTON') {
-    cursor.innerText = elemBelow.innerText;
-    cursor.dataset.target = elemBelow.innerText;
+  // Nếu phần tử có thuộc tính onclick
+  if (elemBelow && (elemBelow.onclick || elemBelow.hasAttribute('onclick'))) {
+    // Ưu tiên hiển thị text của nút hoặc thẻ
+    const label = elemBelow.innerText || elemBelow.getAttribute('title') || 'Có thể bấm';
+    cursor.innerText = label.trim();
+    cursor.dataset.target = label.trim();
   } else {
     cursor.innerText = '';
     cursor.dataset.target = '';
   }
 }
+
 
 function endDrag() 
 {
