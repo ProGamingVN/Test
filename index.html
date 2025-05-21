@@ -20,10 +20,24 @@
        white-space: pre-wrap; /* tự xuống dòng khi quá dài */
        word-break: break-word; /* ngắt từ khi cần */
     }
+    #speedControl 
+    {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #007bff;
+  color: white;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  z-index: 999;
+     }
+
   </style>
 </head>
 <body>
-
+  <button id="speedControl" onclick="changeSpeed()">Tốc độ: 1x</button>
   <!-- Trang chủ: Danh sách sách -->
   <div id="home">
     <h1>Danh sách sách giáo khoa</h1>
@@ -114,14 +128,24 @@
     navigator.vibrate(duration);
 
     i++;
-    setTimeout(step, duration + 150); // +150ms nghỉ giữa ký tự
+    setTimeout(step, (duration + 150) / speedMultiplier);
     if (i === morseSpans.length) morseSpans[i - 1].style.background = "";
 
   }
 
   step();
 }
+let speedMultiplier = 1; // Mặc định 1x
 
+function changeSpeed() 
+{
+  if (speedMultiplier === 1) speedMultiplier = 1;
+  else if (speedMultiplier === 2) speedMultiplier = 0.5;
+  else if (speedMultiplier === 0.5) speedMultiplier = 2;
+  else speedMultiplier = 1;
+
+  document.getElementById("speedControl").innerText = `Tốc độ: ${speedMultiplier}x`;
+}
     function goHome() 
     {
       document.getElementById("home").classList.remove("hidden");
