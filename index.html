@@ -188,9 +188,9 @@
   cursor.addEventListener('mousedown', () => navigator.vibrate(100));
   cursor.addEventListener('touchstart', () => navigator.vibrate(100));
 
-  function startDrag(e) {
+  function startDrag(e) 
+  {
     document.body.classList.add('noscroll');
-    navigator.vibrate(100);
     dragging = true;
     const evt = e.touches ? e.touches[0] : e;
     offsetX = evt.clientX - cursor.offsetLeft;
