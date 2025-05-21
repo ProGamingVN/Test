@@ -20,7 +20,8 @@ const cursor = document.getElementById('cursor');
     offsetY = evt.clientY - cursor.offsetTop;
   }
 
-  function drag(e) {
+  function drag(e) 
+  {
     if (!dragging) return;
     const evt = e.touches ? e.touches[0] : e;
     const x = evt.clientX - offsetX;
@@ -29,7 +30,13 @@ const cursor = document.getElementById('cursor');
     cursor.style.top = y + 'px';
   }
 
-  function endDrag() {
+  function endDrag() 
+  {
     document.body.classList.remove('noscroll');
     dragging = false;
+  }
+  function resetCursorPosition() 
+  {
+    cursor.style.top = '75%';
+    cursor.style.left = '75%';
   }
