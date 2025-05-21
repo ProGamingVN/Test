@@ -113,6 +113,11 @@
   {
     if (i >= morseSpans.length) return;
 
+      if (isPaused) 
+      {
+       setTimeout(step, 200); // chờ 200ms rồi kiểm tra lại
+       return;
+      }
     // Xóa highlight trước đó
     if (i > 0) morseSpans[i - 1].style.background = "";
 
@@ -132,17 +137,12 @@
     if (i === morseSpans.length) morseSpans[i - 1].style.background = "";
 
   }
-  if (isPaused) 
-  {
-    setTimeout(step, 200); // chờ 200ms rồi kiểm tra lại
-    return;
-  }
 
   step();
 }
 let speedMultiplier = 1; // Mặc định 1x
 
-ffunction changeSpeed() {
+function changeSpeed() {
   if (speedMultiplier === 1) {
     speedMultiplier = 2;
   } else if (speedMultiplier === 2) {
@@ -151,8 +151,9 @@ ffunction changeSpeed() {
     speedMultiplier = 1;
   }
 
-  document.getElementById("speedControl").innerText = `Tốc độ: ${speedMultiplier}x`;
+  document.getElementById("speedLabel").innerText = `${speedMultiplier}x`;
 }
+
 
     function goHome() 
     {
