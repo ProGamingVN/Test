@@ -9,7 +9,8 @@
       overflow: hidden;
       touch-action: none;
     }
-    .round-button {
+    .round-button 
+    {
       width: 50px;
       height: 50px;
       border-radius: 50%;
@@ -34,7 +35,7 @@
 </head>
 <body>
 <div id="cursor"
-     style="position: fixed; top: 77%; left: 7%; width: 60px; height: 60px;
+     style="position: fixed; top: 75%; left: 75%; width: 60px; height: 60px;
             border-radius: 50%; background: rgba(0,0,0,0.3); color: white;
             display: flex; align-items: center; justify-content: center;
             font-size: 12px; z-index: 999;">
@@ -42,13 +43,13 @@
 
 <!-- Các nút chức năng -->
 <div style="position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px;">
-  <button onclick="identify()">Nhận diện</button>
   <button onclick="vibrateMorse()">Bắt đầu rung</button>
   <button onclick="togglePause()">Tạm dừng</button>
   <button onclick="changeSpeed()">Tốc độ: <span id="speedLabel">1x</span></button>
 </div>
 <div style="position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px;">
-  <button class="round-button" onclick="goHome()" title="Quay lại">↩</button>
+  <button class="round-button" onclick="identify()">Nhận diện</button>
+  <button class="round-button" onclick="goHome()" title="Quay lại">Quay lại</button>
 </div>
 
 <!-- Trang danh sách sách -->
@@ -185,8 +186,8 @@
 
   function resetCursorPosition() 
   {
-    cursor.style.top = '77%';
-    cursor.style.left = '7%';
+    cursor.style.top = '75%';
+    cursor.style.left = '75%';
   }
 
   const cursor = document.getElementById('cursor');
@@ -246,6 +247,22 @@
     document.body.classList.remove('noscroll');
     dragging = false;
   }
+  cursor.addEventListener('click', function () 
+  {
+  const rect = cursor.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  cursor.style.pointerEvents = 'none'; // tránh chọn chính nó
+  const elem = document.elementFromPoint(centerX, centerY);
+  cursor.style.pointerEvents = 'auto';
+
+  if (elem && typeof elem.click === 'function') 
+  {
+    elem.click();
+  }
+  });
+
 </script>
 </body>
 </html>
