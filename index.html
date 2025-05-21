@@ -36,6 +36,7 @@
     <h2 id="bookTitle"></h2>
     <p id="bookInfo"></p>
     <pre id="morse"></pre>
+    <button onclick="vibrateMorse()">Bắt đầu rung</button>
     <button onclick="goHome()">Quay lại</button>
   </div>
 
@@ -65,7 +66,8 @@
       return text.toUpperCase().split('').map(char => morseMap[char] || '').join(' ');
     }
 
-    function showDetail(book) {
+    function showDetail(book) 
+    {
   document.getElementById("home").classList.add("hidden");
   document.getElementById("detail").classList.remove("hidden");
 
@@ -91,7 +93,26 @@
       console.error('Lỗi:', err);
     });
   }
+    function vibrateMorse() 
+{
+  const morseText = document.getElementById("morse").innerText;
+  const pattern = [];
 
+  for (let char of morseText) 
+  {
+    if (char === '.') {
+      pattern.push(100, 100); // chấm: rung 100ms, nghỉ 100ms
+    } else if (char === '-') {
+      pattern.push(300, 100); // gạch: rung 300ms, nghỉ 100ms
+    } else if (char === '/') {
+      pattern.push(0, 400);   // dấu cách giữa từ: nghỉ 400ms
+    } else if (char === ' ') {
+      pattern.push(0, 200);   // dấu cách giữa chữ: nghỉ 200ms
+    }
+  }
+
+  navigator.vibrate(pattern);
+}
     function goHome() 
     {
       document.getElementById("home").classList.remove("hidden");
