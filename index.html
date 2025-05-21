@@ -25,6 +25,7 @@
 </head>
 <body>
   <div style="position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px;">
+    <button onclick="vibrateMorse()">Bắt đầu rung</button>
     <button onclick="togglePause()">Tạm dừng</button>
     <button onclick="changeSpeed()">Tốc độ: <span id="speedLabel">1x</span></button>
   </div>
@@ -41,7 +42,6 @@
     <h2 id="bookTitle"></h2>
     <p id="bookInfo"></p>
     <pre id="morse"></pre>
-    <button onclick="vibrateMorse()">Bắt đầu rung</button>
     <button onclick="goHome()">Quay lại</button>
   </div>
 
