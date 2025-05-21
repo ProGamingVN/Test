@@ -81,7 +81,8 @@
   let isRunning = false;
   let isPaused = false;
   let speedMultiplier = 1;
-
+  cursor.addEventListener('mousedown',navigator.vibrate(100));
+  cursor.addEventListener('touchstart',navigator.vibrate(100));
   function togglePause() 
   {
     isPaused = !isPaused;
@@ -169,7 +170,7 @@
   }
 
   function updateCursorLabelAtCenter() 
-	{
+{
   const rect = cursor.getBoundingClientRect();
   const centerX = rect.left + rect.width / 2;
   const centerY = rect.top + rect.height / 2;
@@ -185,7 +186,7 @@
       cursor.dataset.target = label.trim();
 
       // Gọi rung mỗi khi chạm vào phần tử bấm được
-      navigator.vibrate(50); // rung nhẹ 50ms
+      navigator.vibrate(100); // rung nhẹ 50ms
     } 
     else 
     {
@@ -227,7 +228,6 @@
 
   function startDrag(e) 
   {
-    navigator.vibrate(100);
     document.body.classList.add('noscroll');
     dragging = true;
     const evt = e.touches ? e.touches[0] : e;
