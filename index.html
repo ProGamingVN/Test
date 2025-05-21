@@ -66,8 +66,7 @@
 </div>
 
 <script>
-  const morseMap = 
-  {
+  const morseMap = {
     A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.',
     G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..',
     M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.',
@@ -81,25 +80,21 @@
   let isRunning = false;
   let isPaused = false;
   let speedMultiplier = 1;
-  
-  function togglePause() 
-  {
+
+  function togglePause() {
     isPaused = !isPaused;
     document.querySelector('button[onclick="togglePause()"]').innerText = isPaused ? 'Tiếp tục' : 'Tạm dừng';
   }
 
-  function normalizeVietnamese(text) 
-  {
+  function normalizeVietnamese(text) {
     return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
   }
 
-  function textToMorse(text) 
-  {
+  function textToMorse(text) {
     return text.toUpperCase().split('').map(c => morseMap[c] || '').join(' ');
   }
 
-  function showDetail(book) 
-  {
+  function showDetail(book) {
     resetCursorPosition();
     document.getElementById("home").classList.add("hidden");
     document.getElementById("detail").classList.remove("hidden");
@@ -116,11 +111,9 @@
       });
   }
 
-  function identify() 
-  {
+  function identify() {
     const text = cursor.innerText;
-    if (!text) 
-    {
+    if (!text) {
       alert("Di chuyển cursor đến nút có nội dung cần rung!");
       return;
     }
@@ -130,21 +123,18 @@
     vibrateMorse();
   }
 
-  function vibrateMorse() 
-  {
+  function vibrateMorse() {
     if (isRunning) return;
     const spans = document.querySelectorAll("#morse span");
     let i = 0;
     isRunning = true;
 
-    function step() 
-    {
+    function step() {
       if (!isRunning || i >= spans.length) {
         isRunning = false;
         return;
       }
-      if (isPaused) 
-      {
+      if (isPaused) {
         setTimeout(step, 200);
         return;
       }
@@ -162,41 +152,12 @@
     step();
   }
 
-  function changeSpeed() 
-  {
-    speedMultiplier = speedMultiplier === 1 ? 1.5 : speedMultiplier === 1.5 ? 2 : speedMultiplier === 2 ? 0.5 : speedMultiplier === 0.5 ? 0.75 : 1;
+  function changeSpeed() {
+    speedMultiplier = speedMultiplier === 1 ? 2 : speedMultiplier === 2 ? 0.5 : 1;
     document.getElementById("speedLabel").innerText = `${speedMultiplier}x`;
   }
 
-  function updateCursorLabelAtCenter() 
-{
-  const rect = cursor.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-
-  cursor.style.pointerEvents = 'none';
-  const elem = document.elementFromPoint(centerX, centerY);
-  cursor.style.pointerEvents = 'auto';
-
-  if (elem && (elem.onclick || elem.hasAttribute('onclick')))   
-	{
-      const label = elem.innerText || elem.getAttribute('title') || elem.value || '';
-      cursor.innerText = label.trim();
-      cursor.dataset.target = label.trim();
-
-      // Gọi rung mỗi khi chạm vào phần tử bấm được
-      navigator.vibrate(100); // rung nhẹ 50ms
-    } 
-    else 
-    {
-      cursor.innerText = '';
-      cursor.dataset.target = '';
-    }
-  }
-
-  
-  function goHome() 
-  {
+  function goHome() {
     resetCursorPosition();
     navigator.vibrate(0);
     isRunning = false;
@@ -209,8 +170,7 @@
     if (pauseBtn) pauseBtn.innerText = 'Tạm dừng';
   }
 
-  function resetCursorPosition() 
-  {
+  function resetCursorPosition() {
     cursor.style.top = '75%';
     cursor.style.left = '75%';
   }
@@ -225,18 +185,16 @@
   document.addEventListener('mouseup', endDrag);
   document.addEventListener('touchend', endDrag);
 
-  function startDrag(e) 
-  {
-    navigation.vibrate(50)
+  function startDrag(e) {
     document.body.classList.add('noscroll');
+    navigator.vibrate(100);
     dragging = true;
     const evt = e.touches ? e.touches[0] : e;
     offsetX = evt.clientX - cursor.offsetLeft;
     offsetY = evt.clientY - cursor.offsetTop;
   }
 
-  function drag(e) 
-  {
+  function drag(e) {
     if (!dragging) return;
     const evt = e.touches ? e.touches[0] : e;
     const x = evt.clientX - offsetX;
@@ -245,8 +203,7 @@
     cursor.style.top = y + 'px';
   }
 
-  function endDrag() 
-  {
+  function endDrag() {
     document.body.classList.remove('noscroll');
     dragging = false;
   }
