@@ -196,6 +196,7 @@ function changeSpeed() {
   // Chuyển về trang chủ
   document.getElementById("home").classList.remove("hidden");
   document.getElementById("detail").classList.add("hidden");
+  document.getElementById("morse").innerHTML = '';
 
   // Reset nút tạm dừng về trạng thái ban đầu
   const pauseBtn = document.querySelector('button[onclick="togglePause()"]');
